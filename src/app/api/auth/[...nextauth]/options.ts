@@ -7,7 +7,7 @@ import UserModel from "@/model/User";
 export const authOptions: NextAuthOptions = {
   providers: [
     CredentialsProvider({
-      credentials: { 
+      credentials: {
         email: { label: "Email" },
         password: { label: "Password", type: "password" },
       },
@@ -53,10 +53,11 @@ export const authOptions: NextAuthOptions = {
     },
     async session({ session, token }) {
       if (token) {
-        session.user._id = token._id;
-        session.user.isVerified = token.isVerified;
-        session.user.isAcceptingMsg = token.isAcceptingMsg;
-        session.user.username = token.username;
+        session.user._id = (token._id as string) || undefined;
+        session.user.isVerified = (token.isVerified as boolean) || undefined;
+        session.user.isAcceptingMsg =
+          (token.isAcceptingMsg as boolean) || undefined;
+        session.user.username = (token.username as string) || undefined;
       }
       return session;
     },
